@@ -5,7 +5,7 @@ Vertabra.register('todo', function( sb ) {
 		Todos = new Todo.Collections.Items();
 		Todos.add({name: 'Buy Milk', due: 'Tomorrow'});
 		TodosListView = new Todo.Views.Items({collection: Todos});
-		$('body').append(TodosListView.render().el);
+		sb.append(TodosListView.render().el);
 
 		sb.trigger('todoStart')
 	};

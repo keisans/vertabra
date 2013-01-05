@@ -20,6 +20,10 @@ var Sandbox = {
 				CONTAINER.find(selector);
 			},
 
+			append: function(object){
+				CONTAINER.append(object);
+			},
+
 			log: function(priority, message){
 				core.log(priority, message);
 			}
