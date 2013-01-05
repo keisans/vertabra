@@ -5,7 +5,9 @@ Vertabra.register('todo', function( sb ) {
 		Todos = new Todo.Collections.Items();
 		Todos.add({name: 'Buy Milk', due: 'Tomorrow'});
 		TodosListView = new Todo.Views.Items({collection: Todos});
-		sb.append(TodosListView.render().el);
+		TodoFormView = new Todo.Views.NewItemView({collection: Todos});
+		sb.append(TodoFormView.render().el);
+		sb.append(TodosListView.render().el)
 
 		sb.trigger('todoStart')
 	};
@@ -45,15 +47,20 @@ Vertabra.register('todo', function( sb ) {
 
 		initialize: function(){
 			_.bindAll(this, 'render');
+			this.collection.on('add', this.addOne, this);
 		},
 
 		render: function(){
 			this.collection.each(function( item ){
-				var itemView = new Todo.Views.Item( { model: item } );
-				this.$el.append( itemView.render().el );
+				this.addOne(item);
 			}, this);
 
 			return this;
+		},
+
+		addOne: function(item){
+			var itemView = new Todo.Views.Item( { model: item } );
+			this.$el.append( itemView.render().el );
 		}
 
 	});
@@ -80,6 +87,31 @@ Vertabra.register('todo', function( sb ) {
 			sb.trigger('itemClick');
 		}
 
+	});
+
+	Todo.Views.NewItemView = Backbone.View.extend({
+		tagName: 'form',
+
+		template: _.template($('#newItemForm').html()),
+
+		events: {
+			'submit': 'newItem'
+		},
+
+		render: function(){
+			this.$el.html(this.template());
+			return this;
+		},
+
+		newItem: function(e) {
+			e.preventDefault();
+			var name = sb.find('#name');
+			var due = sb.find('#due');
+
+			this.collection.add({name: name.val(), due: due.val()});
+			name.val('');
+			due.val('');
+		}
 	});
 
 	return _public;

@@ -17,11 +17,11 @@ var Sandbox = {
 			},
 
 			find: function(selector){
-				CONTAINER.find(selector);
+				return CONTAINER.find(selector);
 			},
 
 			append: function(object){
-				CONTAINER.append(object);
+				return CONTAINER.append(object);
 			},
 
 			log: function(priority, message){
